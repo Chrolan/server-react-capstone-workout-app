@@ -7,7 +7,7 @@ const exerciseSchema = mongoose.Schema ({
     name : {type: String, required: true },
     reps : {type: Number, default: 0 },
     sets : {type : Number, default: 0},
-    weight : {typ: Number, default: 0}
+    weight : {type: Number, default: 0}
 });
 
 

@@ -32,11 +32,11 @@ app.use(function (req, res, next) {
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 
-app.use('/users/', usersRouter);
-app.use('/auth/', authRouter);
-app.use('/workouts/',workoutRouter);
-
 const jwtAuth = passport.authenticate('jwt', { session: false });
+
+app.use('/users/', jwtAuth, usersRouter);
+app.use('/auth/', jwtAuth, authRouter);
+app.use('/workouts/', jwtAuth, workoutRouter);
 
 app.get('/api/protected', jwtAuth, (req, res) => {
   return res.json({

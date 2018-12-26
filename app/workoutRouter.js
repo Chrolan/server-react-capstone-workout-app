@@ -38,8 +38,6 @@ router.get( '/' , jsonParser,  (req, res) => {
 
 router.post('/' , jsonParser , (req, res) => {
 
-    console.log(req.body);
-
     Workout.findOne({ name: req.body.name, date: req.body.date})
         .then(workout => {
             if (workout != null && Object.keys(workout).length > 0) {
@@ -55,7 +53,6 @@ router.post('/' , jsonParser , (req, res) => {
                         res.status(200).json(workout)
                     })
                     .catch(err => {
-                        console.log(err);
                         res.status(500).json({message: 'Could not create workout'})
                     })
             }
@@ -69,7 +66,7 @@ router.post('/' , jsonParser , (req, res) => {
 
 router.put('/:id', jsonParser, (req,res) => {
 
-    if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
+    if (!(req.params.id && req.body._id && req.params.id === req.body._id)) {
     const message = (
       `Request path id (${req.params.id}) and request body id ` +
       `(${req.body.id}) must match`);
@@ -87,7 +84,7 @@ router.put('/:id', jsonParser, (req,res) => {
                     exercises: req.body.exercises
                 })
                     .then(workout => {
-                        res.status(200).json({message: 'Workout updated!', workout})
+                        res.status(204).json({message: 'Workout updated!', workout})
                     })
                     .catch(err => {
                         res.status(500).json({message: 'Could not update workout'})
@@ -109,7 +106,7 @@ router.delete('/:id', jsonParser, (req,res) => {
         .then(workout => {
             if(workout != null && Object.keys(workout).length > 0) {
                 Workout.deleteOne(workout)
-                    .then(res.status(400).json({message: 'Success'}))
+                    .then(res.status(204).json({message: 'Success'}))
                     .catch(err => {
                         console.log(err);
                         res.status(500).json({message: 'Error deleting Workout'})
