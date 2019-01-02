@@ -16,7 +16,6 @@ router.get( '/' , jsonParser,  (req, res) => {
     const filters = {};
     const queryFields = [];
 
-    //appends fields to filters object, which is later used by Device.find in filtering mongo search
     queryFields.forEach(field => {
         if (req.query[field]){
             filters[field] = req.query[field]
@@ -27,9 +26,9 @@ router.get( '/' , jsonParser,  (req, res) => {
         .limit(5)
         .sort({'name' : 1})
         .then(workouts => {
-            res.json({ workouts : workouts.map(workout => {
+            res.json(workouts.map(workout => {
                 return workout
-                })})
+                }))
         })
         .catch(err => {
             res.status(500).json({message: 'Could not retreive workouts'})
