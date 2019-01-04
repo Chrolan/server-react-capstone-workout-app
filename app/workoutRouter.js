@@ -2,6 +2,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
+var moment = require('moment');
+
 const { Workout } = require('./models');
 
 const router = express.Router();
@@ -52,6 +54,7 @@ router.post('/' , jsonParser , (req, res) => {
                         res.status(200).json(workout)
                     })
                     .catch(err => {
+                        console.log(err);
                         res.status(500).json({message: 'Could not create workout'})
                     })
             }
