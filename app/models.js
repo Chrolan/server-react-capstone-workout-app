@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 const exerciseSchema = mongoose.Schema ({
-    name : {type: String, required: true },
+    name : {type: String, required: true, default: ''},
     reps : {type: Number, default: 0 },
     sets : {type : Number, default: 0},
     weight : {type: Number, default: 0}

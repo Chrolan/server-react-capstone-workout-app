@@ -28,12 +28,27 @@ router.get( '/' , jsonParser,  (req, res) => {
         .limit(5)
         .sort({'name' : 1})
         .then(workouts => {
-            res.json(workouts.map(workout => {
+            res.status(200).json(workouts.map(workout => {
                 return workout
                 }))
         })
         .catch(err => {
             res.status(500).json({message: 'Could not retreive workouts'})
+        })
+});
+
+router.get('/:id', jsonParser, (req, res) => {
+
+    Workout.findOne({_id:req.params.id})
+        .then(workout => {
+            if (workout != null && Object.keys(workout).length > 0) {
+                res.status(200).json(workout)
+            }
+        else {
+                res.status(500).json({message: 'Workout Does not exsist'})
+            }})
+        .catch(err => {
+            res.status(500).json({message: 'Internal Server Error'})
         })
 });
 
@@ -67,6 +82,8 @@ router.post('/' , jsonParser , (req, res) => {
 
 
 router.put('/:id', jsonParser, (req,res) => {
+
+    console.log(req.body);
 
     if (!(req.params.id && req.body._id && req.params.id === req.body._id)) {
     const message = (
