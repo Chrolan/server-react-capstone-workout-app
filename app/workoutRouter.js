@@ -2,8 +2,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
-var moment = require('moment');
-
 const { Workout } = require('./models');
 
 const router = express.Router();
@@ -15,16 +13,7 @@ const jsonParser = bodyParser.json();
 
 router.get( '/' , jsonParser,  (req, res) => {
 
-    const filters = {};
-    const queryFields = [];
-
-    queryFields.forEach(field => {
-        if (req.query[field]){
-            filters[field] = req.query[field]
-        }
-    });
-
-    Workout.find(filters)
+    Workout.find({user: req.user.username})
         .limit(5)
         .sort({'name' : 1})
         .then(workouts => {
@@ -54,6 +43,8 @@ router.get('/:id', jsonParser, (req, res) => {
 
 router.post('/' , jsonParser , (req, res) => {
 
+    console.log(req.user);
+
     Workout.findOne({ name: req.body.name, date: req.body.date})
         .then(workout => {
             if (workout != null && Object.keys(workout).length > 0) {
@@ -63,7 +54,8 @@ router.post('/' , jsonParser , (req, res) => {
                 Workout.create({
                     name : req.body.name,
                     date : req.body.date,
-                    exercises : req.body.exercises
+                    exercises : req.body.exercises,
+                    user : req.user.username
                     })
                     .then(workout => {
                         res.status(200).json(workout)

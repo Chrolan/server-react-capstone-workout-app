@@ -14,6 +14,7 @@ const exerciseSchema = mongoose.Schema ({
 const workoutSchema =  mongoose.Schema ({
     name : {type: String, required: true, default: 'Workout'},
     date : {type: Date, required: true},
+    user : {type: String, required: true},
     exercises : [ exerciseSchema ]
 });
 
