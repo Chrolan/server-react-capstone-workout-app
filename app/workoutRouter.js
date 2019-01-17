@@ -15,7 +15,7 @@ router.get( '/' , jsonParser,  (req, res) => {
 
     Workout.find({user: req.user.username})
         .limit(5)
-        .sort({'name' : 1})
+        .sort({'date' : -1})
         .then(workouts => {
             res.status(200).json(workouts.map(workout => {
                 return workout
@@ -42,8 +42,6 @@ router.get('/:id', jsonParser, (req, res) => {
 });
 
 router.post('/' , jsonParser , (req, res) => {
-
-    console.log(req.user);
 
     Workout.findOne({ name: req.body.name, date: req.body.date})
         .then(workout => {
